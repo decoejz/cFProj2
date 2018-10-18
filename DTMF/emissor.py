@@ -187,13 +187,12 @@ class Teclado:
 		self.plot_grafico(sinal)
 	
 	def plot_grafico(self,sinal):
-		# plt.plot(self.cont,sinal)
-		# plt.title("Sinal enviado")
-		# if sys.platform == 'darwin':
-		# 	plt.show(block=False)
-		# else:
-		# 	plt.show()
-		pass
+		plt.plot(self.cont,sinal)
+		plt.title("Sinal enviado")
+		if sys.platform == 'darwin':
+			plt.show(block=False)
+		else:
+			plt.show()
 		
 teclado = Teclado()
 teclado.iniciar()
