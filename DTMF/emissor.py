@@ -97,7 +97,7 @@ class Teclado:
 		self.freq5 = 770
 		self.freq6 = 852
 		self.freq7 = 941
-		self.amplitude = 0.5
+		self.amplitude = 5
 		self.time = 1
 		self.fs = 44100
 
@@ -111,6 +111,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq4, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 
 	def clicar_botao_2(self, event):
@@ -118,6 +119,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq4, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 
 	def clicar_botao_3(self, event):
@@ -125,6 +127,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq4, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 		
 	def clicar_botao_4(self, event):
@@ -132,6 +135,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq5, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 
 	def clicar_botao_5(self, event):
@@ -139,6 +143,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq5, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 		
 	def clicar_botao_6(self, event):
@@ -146,6 +151,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq5, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 
 	def clicar_botao_7(self, event):
@@ -153,6 +159,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq6, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 		
 	def clicar_botao_8(self, event):
@@ -160,6 +167,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq6, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 
 	def clicar_botao_9(self, event):
@@ -167,6 +175,7 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq6, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 		
 	def clicar_botao_0(self, event):
@@ -174,13 +183,16 @@ class Teclado:
 		x, sinal2 = self.sig.generateSin(self.freq7, self.amplitude, self.time, self.fs)
 		sinal = sinal1 + sinal2
 		sd.play(sinal, self.fs)
+		sd.wait()
 		self.plot_grafico(sinal)
 	
 	def plot_grafico(self,sinal):
 		plt.plot(self.cont,sinal)
 		plt.title("Sinal enviado")
-		plt.show()
-		# pass
+		if sys.platform == 'darwin':
+			plt.show(block=False)
+		else:
+			plt.show()
 		
 teclado = Teclado()
 teclado.iniciar()
