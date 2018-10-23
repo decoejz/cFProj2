@@ -61,7 +61,7 @@ while looping:
 	freq, t = sig.calcFFT(dirtySignal,fs)
 
 	#Encontrando a posição dos picos
-	indexes = peakutils.indexes(t, thres=0.1, min_dist=70)
+	indexes = peakutils.indexes(t, thres=3, min_dist=70)
 
 	#Picos - lista
 	peaks_x = peakutils.interpolate(freq,t, ind=indexes)
