@@ -1,3 +1,5 @@
+from scipy import signal
+
 def normaliza(sinal):
 	maior = abs(max(sinal))
 	menor = abs(min(sinal))
@@ -10,7 +12,7 @@ def normaliza(sinal):
 	
 	return(resultado)
 
-def passaBaixa(sinal):
+def passaBaixa(sinal,fs):
 	#exemplo de filtragem do sinal yAudioNormalizado
 	# https://scipy.github.io/old-wiki/pages/Cookbook/FIRFilter.html
 	nyq_rate = fs/2
