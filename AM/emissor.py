@@ -8,7 +8,7 @@ import sounddevice as sd
 
 freq = 13000
 amplitude = 5
-time = 2 #seconds
+time = 1 #seconds
 fs = 44100
 CONT = np.linspace(0, 88200, 88200)
 
@@ -19,29 +19,36 @@ data = sd.rec(int(time * fs), samplerate=fs, channels=1)
 sd.wait()
 print('Acabou de gravar')
 
+#####AUDIO NORMALIZADO######
+print('Começando a normalizar')
+normalizado = normaliza(data)
+
+#####AUDIO FILTRADO######
+print('Começando a filtrar')
+filtrado = passaBaixa(normalizado,fs)
+
+#####AUDIO MODULADO######
+print('Começando a modular')
+modulado = modula(filtrado,freq,time,fs)
+
+#####GRAFICOS######
 plt.plot(CONT,data)
 plt.title('Sinal de áudio original')
 plt.show()
 
-#####NORMALIZANDO AUDIO INICIAL######
-normalizado = normaliza(data)
 plt.plot(CONT,normalizado)
 plt.title('Sinal de áudio normalizado')
 plt.show()
 
-#####AUDIO FILTRADO######
-filtrado = passaBaixa(normalizado,fs)
 plt.plot(CONT,filtrado)
 plt.title('Sinal de áudio filtrado')
 plt.show()
 
-#####AUDIO MODULADO######
-# modulado = 
+plt.plot(CONT,modulado)
+plt.title('Sinal de áudio modulado')
+plt.show()
 
 #####TOCANDO AUDIO MODULADO######
-# sd.play(modulado, fs)
-# sd.wait()
-
-###########
-# sig = signalMeu()
-# x,s = sig.generateSin(freq, amplitude, time, fs)
+print('Resultado')
+sd.play(modulado, fs)
+sd.wait()
