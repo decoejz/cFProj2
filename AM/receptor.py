@@ -17,37 +17,67 @@ looping = True
 fs = 44100
 cont = np.linspace(0, 88200, 88200)
 amplitude = 1
-freqP = 13000
-duration = 20  # seconds
-time = 10
+freqP = 14000
+duration = 5  # seconds
+time = 5
 port = signalMeu()
-P = port.generateSin(freqP, amplitude, time, fs)
+x, Port = port.generateSin(freqP, amplitude, time, fs)
+sd.default.channels = 1
+sd.default.samplerate = fs
 
 
-while looping:
+#while looping:
 
-	#Gravação de sinal
-	dirtySignal = sd.rec(int(duration * fs), samplerate=fs, channels=1)
-	sd.wait()
-	#time.sleep(1)
+#Gravação de sinal
+dirtySignal = sd.rec(int(duration * fs))
+sd.wait()
+#time.sleep(1)
 
-	#limpa o sinal -- correção do erro da placa de audio
-	dirtySignal = dirtySignal[:,0]
-	# sd.play(dirtySignal, fs)
-	
-	#Objeto da classe para calculo da FFT
-	sig = signalMeu()
-	freq, t = sig.calcFFT(dirtySignal,fs)
+#limpa o sinal -- correção do erro da placa de audio
 
-	#Encontrando a posição dos picos
-	indexes = peakutils.indexes(t, thres=3, min_dist=70)
+dirtySignal = dirtySignal[:,0]
+#demod = dirtySignal[:,0]
+demod = dirtySignal*Port #np.multiply(dirtySignal,Port)
+demod = passaBaixa(demod,fs)
 
-	#Picos - lista
-	peaks_x = peakutils.interpolate(freq,t, ind=indexes)
-	print("picos:           ", peaks_x)
+#Objeto da classe para calculo da FFT
+sig = signalMeu()
+freq, t = sig.calcFFT(dirtySignal,fs)
+print("frequencias:     ",t)
 
-	for p in peaks_x:
-		if abs(13000 - p) < 20:
-			demod = dirtySignal * P
-			demod = passaBaixa(demod)
+#Encontrando a posição dos picos
+indexes = peakutils.indexes(t, thres=3, min_dist=70)
+
+#Picos - lista
+peaks_x = peakutils.interpolate(freq,t, ind=indexes)
+print("picos:           ", peaks_x)
+
+#for p in freq:
+	#if abs(13000 - p) < 200:
+print("entrou no if")
+
+
+freq, t = sig.calcFFT(demod,fs)
+#Encontrando a posição dos picos
+indexes = peakutils.indexes(t, thres=3, min_dist=70)
+
+#Picos - lista
+peaks_x = peakutils.interpolate(freq,t, ind=indexes)
+print("picos:           ", peaks_x)
+
+#Gráfico do sinal sonoro recebido
+plt.plot(demod)
+plt.title("Sinal recebido (tempo)")
+plt.show()
+
+#Plota o gráfico com as frequências e os picos 
+pplot(freq, t, indexes)
+plt.title('Frequências')
+plt.show()
+
+print("começou a emitir")
+sd.play(demod*100)
+sd.wait()
+print("terminou a emissão")
+#break
 			
