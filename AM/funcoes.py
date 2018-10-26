@@ -1,5 +1,7 @@
 from scipy import signal
 from signalTeste import *
+import numpy as np
+import matplotlib.pyplot as plt
 
 def normaliza(sinal):
 	maior = abs(max(sinal))
@@ -27,8 +29,9 @@ def passaBaixa(sinal,fs):
 	return(yFiltrado)
 
 def modula(sinal,freq,tempo,fs):
+	k = 0
 	sig = signalMeu()
-	x,multiplicado = sig.generateSin(freq,1,tempo,fs)
-	modulado = (sinal * multiplicado) + multiplicado
+	x,multiplicado = sig.generateSin(freq,5,tempo,fs)
+	modulado = np.multiply(sinal,multiplicado) + k * multiplicado
 
 	return(modulado)
