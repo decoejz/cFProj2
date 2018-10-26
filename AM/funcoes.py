@@ -2,16 +2,20 @@ from scipy import signal
 from signalTeste import *
 import numpy as np
 import matplotlib.pyplot as plt
+import peakutils
+from peakutils.plot import plot as pplot
+
+sig = signalMeu()
 
 def normaliza(sinal):
 	maior = abs(max(sinal))
 	menor = abs(min(sinal))
 	if menor > maior:
 		maior = menor
-	
-	resultado = []
-	for i in sinal:
-		resultado.append(i/maior)
+	resultado = sinal/maior
+	# resultado = []
+	# for i in sinal:
+	# 	resultado.append(i/maior)
 	
 	return(resultado)
 
@@ -30,8 +34,18 @@ def passaBaixa(sinal,fs):
 
 def modula(sinal,freq,tempo,fs):
 	k = 0
-	sig = signalMeu()
 	x,multiplicado = sig.generateSin(freq,5,tempo,fs)
 	modulado = np.multiply(sinal,multiplicado) + k * multiplicado
 
 	return(modulado)
+
+def plotandoFreq(sinal,fs):
+	# sinal = sinal[:,0]
+	freq, t = sig.calcFFT(sinal,fs)
+	#Encontrando a posição dos picos
+	indexes = peakutils.indexes(t, thres=3, min_dist=70)
+	#Picos - lista
+	peaks_x = peakutils.interpolate(freq,t, ind=indexes)
+	pplot(freq, t, indexes)
+	plt.title('Furier')
+	plt.show()
